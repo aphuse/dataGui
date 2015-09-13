@@ -22,12 +22,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicButtonUI;
 /**
  * 
- * <b>ÀàÃû³Æ£º</b>ClosedTabComponent<br>
- * <b>ÀàÃèÊö£º</b>º¬ÓĞ¹Ø±Õ°´Å¥µÄ±êÇ©×é¼ş<br>
- * <b>´´½¨ÈË£º</b>Ğ»Ö¾¸£<br>
- * <b>ĞŞ¸ÄÈË£º</b>Ğ»Ö¾¸£<br>
- * <b>ĞŞ¸ÄÊ±¼ä£º</b>2015Äê9ÔÂ8ÈÕ ÉÏÎç8:52:12<br>
- * <b>ĞŞ¸Ä±¸×¢£º</b><br>
+ * <b>ç±»åç§°ï¼š</b>ClosedTabComponent<br>
+ * <b>ç±»æè¿°ï¼š</b>å«æœ‰å…³é—­æŒ‰é’®çš„æ ‡ç­¾ç»„ä»¶<br>
+ * <b>åˆ›å»ºäººï¼š</b>è°¢å¿—ç¦<br>
+ * <b>ä¿®æ”¹äººï¼š</b>è°¢å¿—ç¦<br>
+ * <b>ä¿®æ”¹æ—¶é—´ï¼š</b>2015å¹´9æœˆ8æ—¥ ä¸Šåˆ8:52:12<br>
+ * <b>ä¿®æ”¹å¤‡æ³¨ï¼š</b><br>
  * @version 1.0.0<br>
  */
 public class ClosedTabComponent extends JPanel {
@@ -72,7 +72,7 @@ public class ClosedTabComponent extends JPanel {
 		public TabClosedButton() {
 			int size = 17;
 			setPreferredSize(new Dimension(size, size));
-			setToolTipText("¹Ø±Õ");
+			setToolTipText("å…³é—­");
 			// Make the button looks the same for all Laf's
 			setUI(new BasicButtonUI());
 			// Make it transparent

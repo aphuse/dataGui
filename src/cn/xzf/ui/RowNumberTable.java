@@ -38,7 +38,7 @@ public class RowNumberTable extends JTable implements ChangeListener,
 		setSelectionModel(main.getSelectionModel());
 
 		TableColumn column = new TableColumn();
-		column.setHeaderValue("ĞòºÅ");
+		column.setHeaderValue("åºå·");
 		addColumn(column);
 		column.setCellRenderer(new RowNumberRenderer());
 		TableCellRenderer headerRenderer = getTableHeader()

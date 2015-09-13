@@ -70,7 +70,7 @@ public class MainWindow {
 		frame = new JFrame();
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(
 				this.getClass().getResource("/images/ui.png")));
-		frame.setTitle("Ğ¡Æó¶ì");
+		frame.setTitle("å°ä¼é¹…");
 		frame.setBounds(100, 100, 946, 564);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -95,7 +95,7 @@ public class MainWindow {
 		frame.getContentPane().add(tabbedPane, gbc_tabbedPane);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		Component component = new ExportDataView(bottomStatusPanel);
-		addTab("Êı¾İµ¼³ö", component);
+		addTab("æ•°æ®å¯¼å‡º", component);
 	}
 
 	private void addTab(String title, Component component) {
@@ -106,41 +106,41 @@ public class MainWindow {
 			tabbedPane.setTabComponentAt(i, new ClosedTabComponent(tabbedPane));
 		}
 		tabbedPane.setSelectedIndex(i);
-		bottomStatusPanel.showStatusMessage("»¶Ó­Ê¹ÓÃ¡¾" + tabbedPane.getTitleAt(i)
-				+ "¡¿¹¦ÄÜ");
+		bottomStatusPanel.showStatusMessage("æ¬¢è¿ä½¿ç”¨ã€" + tabbedPane.getTitleAt(i)
+				+ "ã€‘åŠŸèƒ½");
 	}
 
 	private void menuInit() {
-		// ²Ëµ¥
+		// èœå•
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 
-		JMenu optionMenu = new JMenu("²Ù×÷");
+		JMenu optionMenu = new JMenu("æ“ä½œ");
 		menuBar.add(optionMenu);
 
-		JMenuItem dataLoadMenuItem = new JMenuItem("Êı¾İµ¼³ö");
+		JMenuItem dataLoadMenuItem = new JMenuItem("æ•°æ®å¯¼å‡º");
 		dataLoadMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Component component = new ExportDataView(bottomStatusPanel);
-				addTab("Êı¾İµ¼³ö", component);
+				addTab("æ•°æ®å¯¼å‡º", component);
 			}
 		});
 		optionMenu.add(dataLoadMenuItem);
 
-		JMenuItem importMenuItem = new JMenuItem("Êı¾İµ¼Èë");
+		JMenuItem importMenuItem = new JMenuItem("æ•°æ®å¯¼å…¥");
 		importMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Component component = new ImportDataView(bottomStatusPanel);
-				addTab("Êı¾İµ¼Èë", component);
+				addTab("æ•°æ®å¯¼å…¥", component);
 			}
 		});
 		optionMenu.add(importMenuItem);
 
-		JMenuItem quitMenuItem = new JMenuItem("ÍË³ö");
+		JMenuItem quitMenuItem = new JMenuItem("é€€å‡º");
 		quitMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int option = JOptionPane.showConfirmDialog(frame, "ÊÇ·ñ¹Ø±Õ³ÌĞò?",
-						"ÌáÊ¾", JOptionPane.OK_CANCEL_OPTION);
+				int option = JOptionPane.showConfirmDialog(frame, "æ˜¯å¦å…³é—­ç¨‹åº?",
+						"æç¤º", JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
 					System.exit(0);
 				}
@@ -167,8 +167,8 @@ public class MainWindow {
 				JTabbedPane sourceTabbedPane = (JTabbedPane) e.getSource();
 				int selectIndex = sourceTabbedPane.getSelectedIndex();
 				if (selectIndex != -1) {
-					bottomStatusPanel.showStatusMessage("»¶Ó­Ê¹ÓÃ¡¾"
-							+ sourceTabbedPane.getTitleAt(selectIndex) + "¡¿¹¦ÄÜ");
+					bottomStatusPanel.showStatusMessage("æ¬¢è¿ä½¿ç”¨ã€"
+							+ sourceTabbedPane.getTitleAt(selectIndex) + "ã€‘åŠŸèƒ½");
 				} else {
 					bottomStatusPanel.showStatusMessage(null);
 				}

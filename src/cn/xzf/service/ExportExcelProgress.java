@@ -44,10 +44,10 @@ public class ExportExcelProgress {
 		if (displayName != null) {
 			header = getExcelHeaders(displayName,keyName,separator);
 		}
-		logger.info("±íÍ·ĞÅÏ¢£º{}",header);
-		logger.info("¿ªÊ¼µ¼³öÎÄ¼ş{}£¬¿ªÊ¼Ê±¼äÎª£º{}",new Object[]{file,new java.util.Date()});
+		logger.info("è¡¨å¤´ä¿¡æ¯ï¼š{}",header);
+		logger.info("å¼€å§‹å¯¼å‡ºæ–‡ä»¶{}ï¼Œå¼€å§‹æ—¶é—´ä¸ºï¼š{}",new Object[]{file,new java.util.Date()});
 		ExeclUtils.export(results, file, header);
-		logger.info("½áÊøµ¼³öÎÄ¼ş{}£¬½áÊøÊ±¼äÎª£º{}",new Object[]{file,new java.util.Date()});
+		logger.info("ç»“æŸå¯¼å‡ºæ–‡ä»¶{}ï¼Œç»“æŸæ—¶é—´ä¸ºï¼š{}",new Object[]{file,new java.util.Date()});
 		return flag;
 	}
 	
@@ -64,8 +64,8 @@ public class ExportExcelProgress {
     	String[] displayName = displayNames.split(separator);
     	String[] keyName = keyNames.split(separator);
     	if (displayName.length != keyName.length) {
-    		logger.error("´«ÈëµÄÏÔÊ¾Ãû³ÆÎª£º{} \n´«ÈëµÄkeyÖµÎª:{} \nÏÔÊ¾µÄÃû³ÆÓëkeyÖµ²»Ò»ÖÂ!",new Object[]{displayName,keyName});
-    		throw new RuntimeException("ÏÔÊ¾Ãû³ÆÓëÖµµÄ³¤¶È²»Ò»ÖÂ!");
+    		logger.error("ä¼ å…¥çš„æ˜¾ç¤ºåç§°ä¸ºï¼š{} \nä¼ å…¥çš„keyå€¼ä¸º:{} \næ˜¾ç¤ºçš„åç§°ä¸keyå€¼ä¸ä¸€è‡´!",new Object[]{displayName,keyName});
+    		throw new RuntimeException("æ˜¾ç¤ºåç§°ä¸å€¼çš„é•¿åº¦ä¸ä¸€è‡´!");
 		} else {
 			List<Map<String, String>> headers = new ArrayList<Map<String,String>>(displayName.length);
 			for (int i = 0; i < displayName.length; i++) {

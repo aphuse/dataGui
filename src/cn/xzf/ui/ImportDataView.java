@@ -60,7 +60,7 @@ public class ImportDataView extends JPanel {
 
 	/**
 	 * 
-	 * ³õÊ¼»¯Ãæ°å<br>
+	 * åˆå§‹åŒ–é¢æ¿<br>
 	 * <br>
 	 */
 	private void init() {
@@ -88,7 +88,7 @@ public class ImportDataView extends JPanel {
 		gbl_headPanel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		headPanel.setLayout(gbl_headPanel);
 
-		JLabel lblNewLabel = new JLabel("Ñ¡ÔñÊı¾İÎÄ¼ş£º");
+		JLabel lblNewLabel = new JLabel("é€‰æ‹©æ•°æ®æ–‡ä»¶ï¼š");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.fill = GridBagConstraints.VERTICAL;
@@ -108,7 +108,7 @@ public class ImportDataView extends JPanel {
 		textFieldFile.setColumns(10);
 
 		buttonFile = new JButton("...");
-		buttonFile.setToolTipText("Ñ¡Ôñµ¼ÈëµÄEXCELÎÄ¼ş");
+		buttonFile.setToolTipText("é€‰æ‹©å¯¼å…¥çš„EXCELæ–‡ä»¶");
 		GridBagConstraints gbc_buttonFile = new GridBagConstraints();
 		gbc_buttonFile.anchor = GridBagConstraints.EAST;
 		gbc_buttonFile.fill = GridBagConstraints.VERTICAL;
@@ -132,7 +132,7 @@ public class ImportDataView extends JPanel {
 		gbl_setPanel.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
 		setPanel.setLayout(gbl_setPanel);
 
-		lblsheet = new JLabel("Ñ¡Ôñµ¼ÈëµÄsheet£º");
+		lblsheet = new JLabel("é€‰æ‹©å¯¼å…¥çš„sheetï¼š");
 		GridBagConstraints gbc_lblsheet = new GridBagConstraints();
 		gbc_lblsheet.insets = new Insets(0, 0, 0, 5);
 		gbc_lblsheet.gridx = 0;
@@ -149,7 +149,7 @@ public class ImportDataView extends JPanel {
 		gbc_spinnerSheet.gridy = 0;
 		setPanel.add(spinnerSheet, gbc_spinnerSheet);
 
-		buttonImport = new JButton("µ¼ÈëÊı¾İ");
+		buttonImport = new JButton("å¯¼å…¥æ•°æ®");
 		buttonImport.setEnabled(false);
 		GridBagConstraints gbc_buttonImport = new GridBagConstraints();
 		gbc_buttonImport.insets = new Insets(0, 0, 0, 5);
@@ -158,7 +158,7 @@ public class ImportDataView extends JPanel {
 		gbc_buttonImport.gridy = 0;
 		setPanel.add(buttonImport, gbc_buttonImport);
 
-		lblcolum = new JLabel("Ñ¡Ôñ¹ØÁªµÄÁĞ£º");
+		lblcolum = new JLabel("é€‰æ‹©å…³è”çš„åˆ—ï¼š");
 		GridBagConstraints gbc_lblcolum = new GridBagConstraints();
 		gbc_lblcolum.insets = new Insets(0, 0, 0, 5);
 		gbc_lblcolum.anchor = GridBagConstraints.EAST;
@@ -188,7 +188,7 @@ public class ImportDataView extends JPanel {
 		gbl_sqlPanel.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
 		sqlPanel.setLayout(gbl_sqlPanel);
 		
-		lblSQL = new JLabel("ÊäÈëSQL£º");
+		lblSQL = new JLabel("è¾“å…¥SQLï¼š");
 		GridBagConstraints gbc_lblSQL = new GridBagConstraints();
 		gbc_lblSQL.anchor = GridBagConstraints.EAST;
 		gbc_lblSQL.insets = new Insets(0, 0, 0, 5);
@@ -205,7 +205,7 @@ public class ImportDataView extends JPanel {
 		sqlPanel.add(textField, gbc_textField);
 		textField.setColumns(10);
 		
-		button_SQL = new JButton("²éÑ¯Êı¾İ");
+		button_SQL = new JButton("æŸ¥è¯¢æ•°æ®");
 		GridBagConstraints gbc_button_SQL = new GridBagConstraints();
 		gbc_button_SQL.gridx = 2;
 		gbc_button_SQL.gridy = 0;
@@ -232,7 +232,7 @@ public class ImportDataView extends JPanel {
 
 	}
 
-	// Ìí¼Ó×é¼şµÄ¼àÌıÊÂ¼ş
+	// æ·»åŠ ç»„ä»¶çš„ç›‘å¬äº‹ä»¶
 	private void componentEventListent() {
 
 		buttonFile.addMouseListener(new MouseAdapter() {
@@ -267,20 +267,20 @@ public class ImportDataView extends JPanel {
 						buttonImport.setEnabled(true);
 						if (statusBarListen != null) {
 							statusBarListen.hideStatusProcessBar();
-							statusBarListen.showStatusMessage("µ¼ÈëEXCELÎÄ¼şÊı¾İÍê³É");
+							statusBarListen.showStatusMessage("å¯¼å…¥EXCELæ–‡ä»¶æ•°æ®å®Œæˆ");
 						}
 						super.done();
 					}
 				};
 				if (statusBarListen != null) {
-					statusBarListen.showStatusMessage("ÕıÔÚµ¼ÈëEXCELÎÄ¼şÊı¾İ...");
+					statusBarListen.showStatusMessage("æ­£åœ¨å¯¼å…¥EXCELæ–‡ä»¶æ•°æ®...");
 					statusBarListen.showStatusProcessBar();
 				}
 				task.execute();
 			}
 		});
 	}
-
+	
 	public void importDataFromFile() {
 		List<List<Object>> lists = null;
 		String file = textFieldFile.getText();
@@ -311,8 +311,8 @@ public class ImportDataView extends JPanel {
 
 	public void showFileChoseDialog() {
 		JFileChooser jfc = new JFileChooser();
-		jfc.setDialogTitle("ÇëÑ¡Ôñµ¼³öEXCELÎÄ¼ş");
-		FileFilter filter = new FileNameExtensionFilter("Excel ¹¤×÷±¡", "xlsx",
+		jfc.setDialogTitle("è¯·é€‰æ‹©å¯¼å‡ºEXCELæ–‡ä»¶");
+		FileFilter filter = new FileNameExtensionFilter("Excel å·¥ä½œè–„", "xlsx",
 				"xls");
 		jfc.setFileFilter(filter);
 		jfc.setCurrentDirectory(new File("./data"));
@@ -338,13 +338,13 @@ public class ImportDataView extends JPanel {
 					if (statusBarListen != null) {
 						statusBarListen.hideStatusProcessBar();
 						statusBarListen
-								.showStatusMessage("¼ÓÔØEXCELÎÄ¼şsheetÍê³É,ÏÖÔÚ¿ÉÒÔµ¼ÈëEXCELÊı¾İÁË");
+								.showStatusMessage("åŠ è½½EXCELæ–‡ä»¶sheetå®Œæˆ,ç°åœ¨å¯ä»¥å¯¼å…¥EXCELæ•°æ®äº†");
 					}
 					super.done();
 				}
 			};
 			if (statusBarListen != null) {
-				statusBarListen.showStatusMessage("ÕıÔÚ¼ÓÔØEXCELÎÄ¼şsheetÊıÁ¿...");
+				statusBarListen.showStatusMessage("æ­£åœ¨åŠ è½½EXCELæ–‡ä»¶sheetæ•°é‡...");
 				statusBarListen.showStatusProcessBar();
 			}
 			task.execute();

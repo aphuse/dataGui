@@ -28,13 +28,13 @@ public class BottomStatusPanel extends JPanel implements BottomStatusPanelListen
 	}
 
 	private void init() {
-		JLabel lblNewLabel_1 = new JLabel("ÎÂÜ°ÌáÊ¾£º");
+		JLabel lblNewLabel_1 = new JLabel("æ¸©é¦¨æç¤ºï¼š");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
 
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
 
-		label_statusMessage = new JLabel("»¶Ó­Ê¹ÓÃXXXÏµÍ³");
+		label_statusMessage = new JLabel("æ¬¢è¿ä½¿ç”¨XXXç³»ç»Ÿ");
 
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setOrientation(SwingConstants.VERTICAL);
@@ -119,7 +119,7 @@ public class BottomStatusPanel extends JPanel implements BottomStatusPanelListen
 	@Override
 	public void showStatusMessage(String message) {
 		if (message == null) {
-			message = "»¶Ó­Ê¹ÓÃXXXÏµÍ³";
+			message = "æ¬¢è¿ä½¿ç”¨XXXç³»ç»Ÿ";
 		}
 		label_statusMessage.setText(message);
 	}

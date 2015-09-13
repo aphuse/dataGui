@@ -64,7 +64,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		bottomStatusPanelListen = listen;
 	}
 
-	// ³õÊ¼»¯´°Ìå
+	// åˆå§‹åŒ–çª—ä½“
 	private void init() {
 		GridBagLayout gbl_frame = new GridBagLayout();
 		gbl_frame.columnWidths = new int[] { 335, 62, 93, 71, 101, 60, 205, 0 };
@@ -76,7 +76,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		setLayout(gbl_frame);
 
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "ÉèÖÃ²éÑ¯SQLÓï¾ä",
+		panel.setBorder(new TitledBorder(null, "è®¾ç½®æŸ¥è¯¢SQLè¯­å¥",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.fill = GridBagConstraints.BOTH;
@@ -87,7 +87,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		add(panel, gbc_panel);
 
 		textArea_sql = new JTextArea();
-		textArea_sql.setToolTipText("ÊäÈëÕıÈ·µÄ²éÑ¯SQLÓï¾ä");
+		textArea_sql.setToolTipText("è¾“å…¥æ­£ç¡®çš„æŸ¥è¯¢SQLè¯­å¥");
 		textArea_sql.setWrapStyleWord(true);
 		textArea_sql.setLineWrap(true);
 		panel.add(textArea_sql);
@@ -109,7 +109,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		panel.setLayout(gl_panel);
 
 		JPanel _data_head_panel = new JPanel();
-		_data_head_panel.setBorder(new TitledBorder(null, "ÉèÖÃµ¼³öÊı¾İ±íÍ·ÊôĞÔ",
+		_data_head_panel.setBorder(new TitledBorder(null, "è®¾ç½®å¯¼å‡ºæ•°æ®è¡¨å¤´å±æ€§",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc__data_head_panel = new GridBagConstraints();
 		gbc__data_head_panel.fill = GridBagConstraints.BOTH;
@@ -127,7 +127,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 				Double.MIN_VALUE };
 		_data_head_panel.setLayout(gbl__data_head_panel);
 
-		chckbx_displayName = new JCheckBox("ÉèÖÃµ¼³ö±íÏÔÊ¾ÁĞÃûÄ¬ÈÏÎªSQLÓï¾ä·µ»ØµÄÁĞÃû");
+		chckbx_displayName = new JCheckBox("è®¾ç½®å¯¼å‡ºè¡¨æ˜¾ç¤ºåˆ—åé»˜è®¤ä¸ºSQLè¯­å¥è¿”å›çš„åˆ—å");
 		GridBagConstraints gbc_chckbx_displayName = new GridBagConstraints();
 		gbc_chckbx_displayName.fill = GridBagConstraints.HORIZONTAL;
 		gbc_chckbx_displayName.anchor = GridBagConstraints.NORTH;
@@ -138,7 +138,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		_data_head_panel.add(chckbx_displayName, gbc_chckbx_displayName);
 
 		JLabel _key_label = new JLabel(
-				"ÏÔÊ¾ÁĞKEY£º");
+				"æ˜¾ç¤ºåˆ—KEYï¼š");
 		_key_label.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc__key_label = new GridBagConstraints();
 		gbc__key_label.fill = GridBagConstraints.BOTH;
@@ -148,7 +148,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		_data_head_panel.add(_key_label, gbc__key_label);
 
 		textField_key = new JTextField();
-		textField_key.setToolTipText("ÊäÈëSQLÓï¾ä·µ»ØµÄÁĞÃû£¬Ê¹ÓÃ¶ººÅ·Ö¸ô");
+		textField_key.setToolTipText("è¾“å…¥SQLè¯­å¥è¿”å›çš„åˆ—åï¼Œä½¿ç”¨é€—å·åˆ†éš”");
 		GridBagConstraints gbc_textField_key = new GridBagConstraints();
 		gbc_textField_key.anchor = GridBagConstraints.NORTH;
 		gbc_textField_key.fill = GridBagConstraints.HORIZONTAL;
@@ -160,7 +160,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		textField_key.setColumns(10);
 
 		JLabel _displayname_label = new JLabel(
-				"ÏÔÊ¾ÁĞÃû³Æ£º");
+				"æ˜¾ç¤ºåˆ—åç§°ï¼š");
 		_displayname_label.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc__displayname_label = new GridBagConstraints();
 		gbc__displayname_label.fill = GridBagConstraints.HORIZONTAL;
@@ -171,7 +171,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 
 		textField_displayName = new JTextField();
 		textField_displayName
-				.setToolTipText("ÊäÈëEXCEL±í¸ñÏÔÊ¾ÁĞÃû³Æ£¬Ë³ĞòÓë·µ»ØÁĞÒ»Ò»¶ÔÓ¦£¬Ê¹ÓÃ¶ººÅ·Ö¸ô");
+				.setToolTipText("è¾“å…¥EXCELè¡¨æ ¼æ˜¾ç¤ºåˆ—åç§°ï¼Œé¡ºåºä¸è¿”å›åˆ—ä¸€ä¸€å¯¹åº”ï¼Œä½¿ç”¨é€—å·åˆ†éš”");
 		GridBagConstraints gbc_textField_displayName = new GridBagConstraints();
 		gbc_textField_displayName.anchor = GridBagConstraints.NORTH;
 		gbc_textField_displayName.fill = GridBagConstraints.HORIZONTAL;
@@ -183,7 +183,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		textField_displayName.setColumns(10);
 
 		JLabel _export_file_name_label = new JLabel(
-				"µ¼³öÎÄ¼şÃû£º");
+				"å¯¼å‡ºæ–‡ä»¶åï¼š");
 		_export_file_name_label.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc__export_file_name_label = new GridBagConstraints();
 		gbc__export_file_name_label.fill = GridBagConstraints.HORIZONTAL;
@@ -194,7 +194,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 				gbc__export_file_name_label);
 
 		textField_file = new JTextField();
-		textField_file.setToolTipText("µ¼³öEXCELÎÄ¼şÃû");
+		textField_file.setToolTipText("å¯¼å‡ºEXCELæ–‡ä»¶å");
 		textField_file.setEditable(false);
 		GridBagConstraints gbc_textField_file = new GridBagConstraints();
 		gbc_textField_file.fill = GridBagConstraints.HORIZONTAL;
@@ -205,7 +205,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		textField_file.setColumns(10);
 
 		button_file = new JButton("...");
-		button_file.setToolTipText("Ñ¡Ôñµ¼³öµÄEXCELÎÄ¼ş");
+		button_file.setToolTipText("é€‰æ‹©å¯¼å‡ºçš„EXCELæ–‡ä»¶");
 		GridBagConstraints gbc_button_file = new GridBagConstraints();
 		gbc_button_file.anchor = GridBagConstraints.NORTH;
 		gbc_button_file.fill = GridBagConstraints.HORIZONTAL;
@@ -229,34 +229,34 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		gbl_panel_1.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		panel_1.setLayout(gbl_panel_1);
 
-		button_opendir = new JButton("´ò¿ªµ¼³öEXCELÎÄ¼şÄ¿Â¼");
+		button_opendir = new JButton("æ‰“å¼€å¯¼å‡ºEXCELæ–‡ä»¶ç›®å½•");
 		GridBagConstraints gbc_button_opendir = new GridBagConstraints();
 		gbc_button_opendir.insets = new Insets(0, 0, 0, 5);
 		gbc_button_opendir.gridx = 1;
 		gbc_button_opendir.gridy = 0;
 		panel_1.add(button_opendir, gbc_button_opendir);
 
-		button_reset = new JButton("ÖØÖÃ²ÎÊı");
+		button_reset = new JButton("é‡ç½®å‚æ•°");
 		GridBagConstraints gbc_button_reset = new GridBagConstraints();
 		gbc_button_reset.insets = new Insets(0, 0, 0, 5);
 		gbc_button_reset.gridx = 2;
 		gbc_button_reset.gridy = 0;
 		panel_1.add(button_reset, gbc_button_reset);
-		button_reset.setToolTipText("Çå¿ÕËùÓĞµÄ²ÎÊıÖµ");
+		button_reset.setToolTipText("æ¸…ç©ºæ‰€æœ‰çš„å‚æ•°å€¼");
 
-		btnexcel = new JButton("µ¼³öEXCEL");
+		btnexcel = new JButton("å¯¼å‡ºEXCEL");
 		GridBagConstraints gbc_btnexcel = new GridBagConstraints();
 		gbc_btnexcel.insets = new Insets(0, 0, 0, 5);
 		gbc_btnexcel.gridx = 3;
 		gbc_btnexcel.gridy = 0;
 		panel_1.add(btnexcel, gbc_btnexcel);
-		btnexcel.setToolTipText("µ¼³öEXCELÎÄ¼ş");
+		btnexcel.setToolTipText("å¯¼å‡ºEXCELæ–‡ä»¶");
 
 		componentEventListent();
 	}
 
 	/**
-	 * ½ûÓÃÊÂ¼şÏìÓ¦
+	 * ç¦ç”¨äº‹ä»¶å“åº”
 	 */
 	public void eventDisable() {
 		textArea_sql.setEnabled(false);
@@ -289,7 +289,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 	}
 
 	/**
-	 * ÏÔÊ¾ÌáÊ¾ĞÅÏ¢
+	 * æ˜¾ç¤ºæç¤ºä¿¡æ¯
 	 */
 	public void showMessage(String message) {
 		if (bottomStatusPanelListen != null) {
@@ -321,33 +321,33 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		String displayName = textField_displayName.getText();
 
 		if (sql == null || sql.trim().length() == 0) {
-			JOptionPane.showMessageDialog(this, "ÇëÉèÖÃÔËĞĞµÄSQLÓï¾ä");
-			showMessage("ÇëÉèÖÃÔËĞĞµÄSQLÓï¾ä");
+			JOptionPane.showMessageDialog(this, "è¯·è®¾ç½®è¿è¡Œçš„SQLè¯­å¥");
+			showMessage("è¯·è®¾ç½®è¿è¡Œçš„SQLè¯­å¥");
 			return false;
 		}
 		if (flag) {
 			displayName = "";
 		} else {
 			if (key == null || key.trim().length() == 0) {
-				JOptionPane.showMessageDialog(this, "ÇëÉèÖÃÏÔÊ¾ÁĞKEYÖµ");
-				showMessage("ÇëÉèÖÃÏÔÊ¾ÁĞKEYÖµ");
+				JOptionPane.showMessageDialog(this, "è¯·è®¾ç½®æ˜¾ç¤ºåˆ—KEYå€¼");
+				showMessage("è¯·è®¾ç½®æ˜¾ç¤ºåˆ—KEYå€¼");
 				return false;
 			}
 			if (displayName == null || displayName.trim().length() == 0) {
-				JOptionPane.showMessageDialog(this, "ÇëÉèÖÃÏÔÊ¾ÁĞÃû³Æ");
-				showMessage("ÇëÉèÖÃÏÔÊ¾ÁĞÃû³Æ");
+				JOptionPane.showMessageDialog(this, "è¯·è®¾ç½®æ˜¾ç¤ºåˆ—åç§°");
+				showMessage("è¯·è®¾ç½®æ˜¾ç¤ºåˆ—åç§°");
 				return false;
 			}
 			if (key.split(",").length != displayName.split(",").length) {
 				JOptionPane
-						.showMessageDialog(this, "ÏÔÊ¾ÁĞµÄÃû³ÆÓëÏÔÊ¾ÁĞµÄKEYÖµ²»Ò»ÖÂ£¬ÇëÖØĞÂÉèÖÃ");
-				showMessage("ÏÔÊ¾ÁĞµÄÃû³ÆÓëÏÔÊ¾ÁĞµÄKEYÖµ²»Ò»ÖÂ£¬ÇëÖØĞÂÉèÖÃ");
+						.showMessageDialog(this, "æ˜¾ç¤ºåˆ—çš„åç§°ä¸æ˜¾ç¤ºåˆ—çš„KEYå€¼ä¸ä¸€è‡´ï¼Œè¯·é‡æ–°è®¾ç½®");
+				showMessage("æ˜¾ç¤ºåˆ—çš„åç§°ä¸æ˜¾ç¤ºåˆ—çš„KEYå€¼ä¸ä¸€è‡´ï¼Œè¯·é‡æ–°è®¾ç½®");
 				return false;
 			}
 		}
 		if (file == null || file.trim().length() == 0) {
-			JOptionPane.showMessageDialog(this, "ÇëÑ¡Ôñ±£´æµ¼³öµÄEXCELÎÄ¼ş");
-			showMessage("ÇëÑ¡Ôñ±£´æµ¼³öµÄEXCELÎÄ¼ş");
+			JOptionPane.showMessageDialog(this, "è¯·é€‰æ‹©ä¿å­˜å¯¼å‡ºçš„EXCELæ–‡ä»¶");
+			showMessage("è¯·é€‰æ‹©ä¿å­˜å¯¼å‡ºçš„EXCELæ–‡ä»¶");
 			return false;
 		}
 		return true;
@@ -361,7 +361,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		textField_displayName.setText("");
 		textField_displayName.setEditable(true);
 		textField_file.setText("");
-		showMessage("²ÎÊıÒÑ¾­Çå¿Õ£¬ÇëÖØĞÂÉèÖÃ");
+		showMessage("å‚æ•°å·²ç»æ¸…ç©ºï¼Œè¯·é‡æ–°è®¾ç½®");
 	}
 
 	public void openDataDir() {
@@ -370,7 +370,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		}
 		String filePath = textField_file.getText();
 		if (filePath == null || filePath.trim().length() == 0) {
-			JOptionPane.showMessageDialog(this, "Î´Ñ¡Ôñµ¼³öÎÄ¼ş!");
+			JOptionPane.showMessageDialog(this, "æœªé€‰æ‹©å¯¼å‡ºæ–‡ä»¶!");
 			return;
 		}
 		File file = new File(textField_file.getText());
@@ -378,18 +378,18 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 			java.awt.Desktop.getDesktop().open(file.getParentFile());
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			JOptionPane.showMessageDialog(this, "´ò¿ªÄ¿Â¼Òì³££¬Çë¼ì²éÑ¡Ôñµ¼³öÎÄ¼şÃûÊÇ·ñÕıÈ·");
+			JOptionPane.showMessageDialog(this, "æ‰“å¼€ç›®å½•å¼‚å¸¸ï¼Œè¯·æ£€æŸ¥é€‰æ‹©å¯¼å‡ºæ–‡ä»¶åæ˜¯å¦æ­£ç¡®");
 		}
 	}
 
 	public void showFileChoseDialog() {
 		JFileChooser jfc = new JFileChooser();
-		jfc.setDialogTitle("ÇëÑ¡Ôñµ¼³öEXCELÎÄ¼ş");
+		jfc.setDialogTitle("è¯·é€‰æ‹©å¯¼å‡ºEXCELæ–‡ä»¶");
 		jfc.setFileFilter(new FileFilter() {
 
 			@Override
 			public String getDescription() {
-				return "Excel ¹¤×÷±¡(*.xlsx)";
+				return "Excel å·¥ä½œè–„(*.xlsx)";
 			}
 
 			@Override
@@ -447,7 +447,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		return isCustomerSetDisplayName;
 	}
 
-	// Ìí¼Ó×é¼şµÄ¼àÌıÊÂ¼ş
+	// æ·»åŠ ç»„ä»¶çš„ç›‘å¬äº‹ä»¶
 	private void componentEventListent() {
 		textArea_sql.addFocusListener(new FocusAdapter() {
 			@Override
@@ -498,8 +498,8 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 				if (!button_reset.isEnabled()) {
 					return;
 				}
-				int option = JOptionPane.showConfirmDialog(getParent(), "ÊÇ·ñÇå¿ÕÉèÖÃµÄ²ÎÊı?",
-						"ÌáÊ¾", JOptionPane.OK_CANCEL_OPTION);
+				int option = JOptionPane.showConfirmDialog(getParent(), "æ˜¯å¦æ¸…ç©ºè®¾ç½®çš„å‚æ•°?",
+						"æç¤º", JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
 					viewListen.buttonResetMouseClicked();
 				}

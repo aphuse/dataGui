@@ -15,7 +15,7 @@ public class ExportDataPresenter implements ExportDataViewListener {
 	}
 
 	public void textAreaSqlFocus() {
-		view.showMessage("ÉèÖÃÕıÈ·µÄ²éÑ¯SQLÓï¾ä");
+		view.showMessage("è®¾ç½®æ­£ç¡®çš„æŸ¥è¯¢SQLè¯­å¥");
 	}
 
 	public void displayNameChckbxChange() {
@@ -23,15 +23,15 @@ public class ExportDataPresenter implements ExportDataViewListener {
 	}
 
 	public void textFieldKeyFocus() {
-		view.showMessage("ÉèÖÃSQL·µ»ØµÄÁĞÃû£¬Ê¹ÓÃ¶ººÅ·Ö¸ô");
+		view.showMessage("è®¾ç½®SQLè¿”å›çš„åˆ—åï¼Œä½¿ç”¨é€—å·åˆ†éš”");
 	}
 
 	public void textFieldDisplayNameFocus() {
-		view.showMessage("ÉèÖÃµ¼³öEXCELÊı¾İ±íÍ·µÄÏÔÊ¾ÁĞÃû£¬ÆäË³ĞòÓëSQL·µ»ØÁĞÖµÒ»Ò»¶ÔÓ¦£¬Ê¹ÓÃ¶ººÅ·Ö¸ô");
+		view.showMessage("è®¾ç½®å¯¼å‡ºEXCELæ•°æ®è¡¨å¤´çš„æ˜¾ç¤ºåˆ—åï¼Œå…¶é¡ºåºä¸SQLè¿”å›åˆ—å€¼ä¸€ä¸€å¯¹åº”ï¼Œä½¿ç”¨é€—å·åˆ†éš”");
 	}
 
 	public void buttonFileAction() {
-		view.showMessage("ÇëÑ¡Ôñµ¼³öµÄÊı¾İEXCELÎÄ¼şÃû");
+		view.showMessage("è¯·é€‰æ‹©å¯¼å‡ºçš„æ•°æ®EXCELæ–‡ä»¶å");
 	}
 
 	public void buttonFileMouseClicked() {
@@ -43,7 +43,7 @@ public class ExportDataPresenter implements ExportDataViewListener {
 	}
 
 	public void buttonExcelMouseClicked() {
-		//½«Ãæ°åµÄÆäËû¿Ø¼şÉèÖÃ²»¿ÉÓÃ
+		//å°†é¢æ¿çš„å…¶ä»–æ§ä»¶è®¾ç½®ä¸å¯ç”¨
 		view.eventDisable();
 		String sql = view.getSql();
 		String file = view.getFile();
@@ -68,19 +68,19 @@ public class ExportDataPresenter implements ExportDataViewListener {
 				view.hideProgress();
 				try {
 					if (get()) {
-						view.showMessage("Êı¾İµ¼³öÒÑ¾­Íê³É");
-						view.showMessageDialog("Êı¾İµ¼³öÒÑ¾­Íê³É");
+						view.showMessage("æ•°æ®å¯¼å‡ºå·²ç»å®Œæˆ");
+						view.showMessageDialog("æ•°æ®å¯¼å‡ºå·²ç»å®Œæˆ");
 					}
 				} catch (Exception e) {
-					view.showMessage("Êı¾İµ¼³öÒì³££¬Çë¼ì²éÈÕÖ¾");
-					view.showMessageDialog("Êı¾İµ¼³öÒì³££º\n" + e.getMessage());
+					view.showMessage("æ•°æ®å¯¼å‡ºå¼‚å¸¸ï¼Œè¯·æ£€æŸ¥æ—¥å¿—");
+					view.showMessageDialog("æ•°æ®å¯¼å‡ºå¼‚å¸¸ï¼š\n" + e.getMessage());
 				} 
 				
 			}
 		};
 		view.showProgress();
 		task.execute();
-		view.showMessage("ÕıÔÚµ¼³öÊı¾İµ½EXCELÎÄ¼ş£¬ÇëÄÍĞÄµÈ´ı...");
+		view.showMessage("æ­£åœ¨å¯¼å‡ºæ•°æ®åˆ°EXCELæ–‡ä»¶ï¼Œè¯·è€å¿ƒç­‰å¾…...");
 	}
 
 	public void buttonOpenDirMouseClicked() {
