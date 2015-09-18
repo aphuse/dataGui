@@ -28,7 +28,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import cn.lzyy.utils.ExeclUtils;
+import cn.xzf.service.ReadExcelService;
 import cn.xzf.ui.listener.BottomStatusPanelListener;
 
 public class ImportDataView extends JPanel {
@@ -43,10 +43,13 @@ public class ImportDataView extends JPanel {
 	private JScrollPane tableScrollPane;
 	private BottomStatusPanelListener statusBarListen;
 	private JLabel lblcolum;
-	private JComboBox<Object> comboBoxColumn;
+	private JComboBox comboBoxColumn;
 	private JLabel lblSQL;
 	private JTextField textField;
 	private JButton button_SQL;
+	private JPanel appenColumnPanel;
+	private JLabel lblAppenColumn;
+	private JTextField textFieldAppenColumn;
 
 	public ImportDataView() {
 		this(null);
@@ -66,9 +69,9 @@ public class ImportDataView extends JPanel {
 	private void init() {
 		GridBagLayout gbl_mainPanel = new GridBagLayout();
 		gbl_mainPanel.columnWidths = new int[] { 0, 0 };
-		gbl_mainPanel.rowHeights = new int[] { 0, 30, 25, 0 };
+		gbl_mainPanel.rowHeights = new int[] { 0, 30, 27, 25, 0 };
 		gbl_mainPanel.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_mainPanel.rowWeights = new double[] { 0.0, 0.0, 0.0,
+		gbl_mainPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0,
 				Double.MIN_VALUE };
 		setLayout(gbl_mainPanel);
 
@@ -166,12 +169,43 @@ public class ImportDataView extends JPanel {
 		gbc_lblcolum.gridy = 0;
 		setPanel.add(lblcolum, gbc_lblcolum);
 
-		comboBoxColumn = new JComboBox<Object>();
+		comboBoxColumn = new JComboBox();
 		GridBagConstraints gbc_comboBoxColumn = new GridBagConstraints();
 		gbc_comboBoxColumn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBoxColumn.gridx = 4;
 		gbc_comboBoxColumn.gridy = 0;
 		setPanel.add(comboBoxColumn, gbc_comboBoxColumn);
+		
+		appenColumnPanel = new JPanel();
+		GridBagConstraints gbc_appenColumnPanel = new GridBagConstraints();
+		gbc_appenColumnPanel.anchor = GridBagConstraints.NORTH;
+		gbc_appenColumnPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_appenColumnPanel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_appenColumnPanel.gridx = 0;
+		gbc_appenColumnPanel.gridy = 2;
+		add(appenColumnPanel, gbc_appenColumnPanel);
+		GridBagLayout gbl_appenColumnPanel = new GridBagLayout();
+		gbl_appenColumnPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_appenColumnPanel.rowHeights = new int[]{0, 0};
+		gbl_appenColumnPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_appenColumnPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		appenColumnPanel.setLayout(gbl_appenColumnPanel);
+		
+		lblAppenColumn = new JLabel("追加列名：");
+		GridBagConstraints gbc_lblAppenColumn = new GridBagConstraints();
+		gbc_lblAppenColumn.insets = new Insets(0, 0, 0, 5);
+		gbc_lblAppenColumn.anchor = GridBagConstraints.EAST;
+		gbc_lblAppenColumn.gridx = 0;
+		gbc_lblAppenColumn.gridy = 0;
+		appenColumnPanel.add(lblAppenColumn, gbc_lblAppenColumn);
+		
+		textFieldAppenColumn = new JTextField();
+		GridBagConstraints gbc_textFieldAppenColumn = new GridBagConstraints();
+		gbc_textFieldAppenColumn.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldAppenColumn.gridx = 1;
+		gbc_textFieldAppenColumn.gridy = 0;
+		appenColumnPanel.add(textFieldAppenColumn, gbc_textFieldAppenColumn);
+		textFieldAppenColumn.setColumns(10);
 
 		JPanel sqlPanel = new JPanel();
 		GridBagConstraints gbc_sqlPanel = new GridBagConstraints();
@@ -179,7 +213,7 @@ public class ImportDataView extends JPanel {
 		gbc_sqlPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_sqlPanel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sqlPanel.gridx = 0;
-		gbc_sqlPanel.gridy = 2;
+		gbc_sqlPanel.gridy = 3;
 		add(sqlPanel, gbc_sqlPanel);
 		GridBagLayout gbl_sqlPanel = new GridBagLayout();
 		gbl_sqlPanel.columnWidths = new int[] { 0, 0, 0, 0 };
@@ -215,7 +249,7 @@ public class ImportDataView extends JPanel {
 		GridBagConstraints gbc__table_panel = new GridBagConstraints();
 		gbc__table_panel.fill = GridBagConstraints.BOTH;
 		gbc__table_panel.gridx = 0;
-		gbc__table_panel.gridy = 3;
+		gbc__table_panel.gridy = 4;
 		add(_table_panel, gbc__table_panel);
 		_table_panel.setLayout(new GridLayout(0, 1, 0, 0));
 
@@ -286,11 +320,12 @@ public class ImportDataView extends JPanel {
 		String file = textFieldFile.getText();
 		int numberSheet = Integer.valueOf(spinnerSheet.getValue().toString());
 		if (file != null && file.length() > 0) {
-			if (file.toLowerCase().endsWith(".xlsx")) {
+			/*if (file.toLowerCase().endsWith(".xlsx")) {
 				lists = ExeclUtils.excel2007ToList(file, numberSheet - 1);
 			} else if (file.toLowerCase().endsWith(".xls")) {
 				lists = ExeclUtils.excel2003ToList(file, numberSheet - 1);
-			}
+			}*/
+			lists = new ReadExcelService(file).excelToList(numberSheet - 1);
 			if (lists != null && lists.size() > 0) {
 				Vector<Object> columnNames = new Vector<Object>(lists.get(0));
 				lists.remove(0);
@@ -300,11 +335,11 @@ public class ImportDataView extends JPanel {
 				}
 				TableModel dataModel = new DefaultTableModel(datas, columnNames);
 				table.setModel(dataModel);
-				ComboBoxModel<Object> comboBoxModel = new DefaultComboBoxModel<Object>(columnNames);
+				ComboBoxModel comboBoxModel = new DefaultComboBoxModel(columnNames);
 				comboBoxColumn.setModel(comboBoxModel);
 			} else {
 				table.setModel(new DefaultTableModel());
-				comboBoxColumn.setModel(new DefaultComboBoxModel<Object>());
+				comboBoxColumn.setModel(new DefaultComboBoxModel());
 			}
 		}
 	}
@@ -316,7 +351,7 @@ public class ImportDataView extends JPanel {
 				"xls");
 		jfc.setFileFilter(filter);
 		jfc.setCurrentDirectory(new File("./data"));
-		int i = jfc.showSaveDialog(this);
+		int i = jfc.showOpenDialog(this);
 		if (i == 0) {
 			final String file = jfc.getSelectedFile().getAbsolutePath();
 			textFieldFile.setText(file);
@@ -325,7 +360,7 @@ public class ImportDataView extends JPanel {
 				@Override
 				protected Void doInBackground() throws Exception {
 					setProgress(0);
-					int numberSheet = ExeclUtils.getNumberSheet(file);
+					int numberSheet = new ReadExcelService(file).getExcelSheetCount();
 					spinnerSheet.setModel(new SpinnerNumberModel(
 							new Integer(1), new Integer(1), new Integer(
 									numberSheet), new Integer(1)));

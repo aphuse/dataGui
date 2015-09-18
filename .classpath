@@ -20,6 +20,7 @@
 	<classpathentry kind="lib" path="lib/poi-3.11.jar"/>
 	<classpathentry kind="lib" path="lib/poi-ooxml-3.11.jar"/>
 	<classpathentry kind="lib" path="lib/poi-ooxml-schemas-3.11.jar"/>
+	<classpathentry kind="lib" path="lib/jodd-3.6.6.jar"/>
 	<classpathentry kind="src" path="conf"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
