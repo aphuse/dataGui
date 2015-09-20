@@ -2,7 +2,7 @@ package cn.xzf.presenter;
 
 import javax.swing.SwingWorker;
 
-import cn.xzf.service.ExportExcelProgress;
+import cn.xzf.service.ExportDatabaseToExcel;
 import cn.xzf.ui.ExportDataViewer;
 import cn.xzf.ui.listener.ExportDataViewListener;
 
@@ -54,7 +54,7 @@ public class ExportDataPresenter implements ExportDataViewListener {
 			key = null;
 		}
 		
-		final ExportExcelProgress eep = new ExportExcelProgress(file, sql, displayName, key, ",", "lzmis");
+		final ExportDatabaseToExcel eep = new ExportDatabaseToExcel(file, sql, displayName, key, ",", "lzmis");
 		SwingWorker<Boolean, Void> task = new SwingWorker<Boolean, Void>(){
 			@Override
 			protected Boolean doInBackground() throws Exception {

@@ -22,7 +22,7 @@ import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 public class WriteExcelService {
-	private List<List<Object>>[] datas;
+	private List<List<List<Object>>> datas;
 	private List<List<String>> columnNames;
 	private List<String> sheetNames;
 	private int sheetCount = 0;
@@ -33,16 +33,16 @@ public class WriteExcelService {
 		this(fileName, null);
 	}
 
-	public WriteExcelService(String fileName, List<List<Object>>[] datas) {
+	public WriteExcelService(String fileName, List<List<List<Object>>> datas) {
 		this(fileName, datas, null);
 	}
 
-	public WriteExcelService(String fileName, List<List<Object>>[] datas,
+	public WriteExcelService(String fileName, List<List<List<Object>>> datas,
 			List<List<String>> columnNames) {
 		this(fileName, datas, columnNames, null);
 	}
 
-	public WriteExcelService(String fileName, List<List<Object>>[] datas,
+	public WriteExcelService(String fileName, List<List<List<Object>>> datas,
 			List<List<String>> columnNames, List<String> sheetNames) {
 		this.datas = datas;
 		this.columnNames = columnNames;
@@ -52,8 +52,8 @@ public class WriteExcelService {
 		if (sheetNames != null) {
 			sheetCount = sheetNames.size();
 		}
-		if (datas != null && datas.length > sheetCount) {
-			sheetCount = datas.length;
+		if (datas != null && datas.size() > sheetCount) {
+			sheetCount = datas.size();
 		}
 	}
 
@@ -85,8 +85,8 @@ public class WriteExcelService {
 				}
 			}
 
-			if (datas != null && datas.length > i) {
-				List<List<Object>> data = datas[i];
+			if (datas != null && datas.size() > i) {
+				List<List<Object>> data = datas.get(i);
 				int count = data.size();
 				for (int j = 0; j < count; j++) {
 					Row row = sheet.createRow(rowCount);
