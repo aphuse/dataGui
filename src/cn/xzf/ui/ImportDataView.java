@@ -346,7 +346,7 @@ public class ImportDataView extends JPanel {
 
 	public void showFileChoseDialog() {
 		JFileChooser jfc = new JFileChooser();
-		jfc.setDialogTitle("请选择导出EXCEL文件");
+		jfc.setDialogTitle("请选择EXCEL文件");
 		FileFilter filter = new FileNameExtensionFilter("Excel 工作薄", "xlsx",
 				"xls");
 		jfc.setFileFilter(filter);

@@ -5,23 +5,23 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import jodd.io.FileNameUtil;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WriteExcelService {
+	private static final Logger logger = LoggerFactory
+			.getLogger(WriteExcelService.class);
 	private List<List<List<Object>>> datas;
 	private List<List<String>> columnNames;
 	private List<String> sheetNames;
@@ -60,9 +60,12 @@ public class WriteExcelService {
 	public String writeToFile() {
 		Workbook workbook = null;
 		int rowCount = 0;
-		if ("xlsx".equalsIgnoreCase(excelType)) {
+		if (isXLSXFile()) {
 			workbook = new SXSSFWorkbook(-1);
-
+		} else if (isXLSile()) {
+			workbook = new HSSFWorkbook();
+		} else {
+			new RuntimeException("当前使用的文件格式未支持！");
 		}
 		for (int i = 0; i < sheetCount; i++) {
 			Sheet sheet = null;
@@ -98,11 +101,20 @@ public class WriteExcelService {
 					for (int k = 0; k < rowData.size(); k++) {
 						setCellValue(row.createCell(k), rowData.get(k));
 					}
-					if (j % 2000 == 0) {
-						try {
-							((SXSSFSheet) sheet).flushRows(2000);
-						} catch (IOException e) {
-							e.printStackTrace();
+					if (isXLSXFile()) {
+						if (j % 2000 == 0) {
+							try {
+								((SXSSFSheet) sheet).flushRows(2000);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					} else if (isXLSile()) {
+						if (j >= 65534) {
+							logger.error("文件{}中的sheet名为【{}】中的数据记录为{}"
+									+ "已经超过65535条记录，超过的数据记录已经丢失，请重新处理！", new Object[]{file,
+									sheet.getSheetName(), count});
+							j = count;
 						}
 					}
 				}
@@ -120,7 +132,9 @@ public class WriteExcelService {
 			OutputStream os = new FileOutputStream(file);
 			workbook.write(os);
 			os.close();
-			((SXSSFWorkbook) workbook).dispose();
+			if (isXLSXFile()) {
+				((SXSSFWorkbook) workbook).dispose();
+			}
 			workbook.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -128,88 +142,6 @@ public class WriteExcelService {
 			e.printStackTrace();
 		}
 		return file.getPath();
-	}
-
-	/**
-	 * 导出excel表格
-	 * 
-	 * @param datas
-	 *            导出的数据
-	 * @param file
-	 *            文件名
-	 * @param header
-	 *            表头信息[{"dispayName":"显示名称1","name":"字段KEY1"},{"dispayName":
-	 *            "显示名称1","name":"字段KEY1"}...]
-	 * @return 导出的文件
-	 */
-	public String export(List<Map<String, Object>> datas, String file,
-			List<Map<String, String>> header) {
-		if ((datas == null || datas.size() == 0 || datas.get(0) == null)
-				&& (header == null || header.isEmpty())) {
-			return null;
-		}
-		Workbook workbook = new SXSSFWorkbook(-1);
-		Sheet sheet = workbook.createSheet();
-		Row row = sheet.createRow(0);
-		// 生成表头开始
-		if (header == null || header.isEmpty()) {
-			if (header == null) {
-				header = new ArrayList<Map<String, String>>();
-			}
-			Map<String, Object> map = datas.get(0);
-			Iterator<Entry<String, Object>> it = map.entrySet().iterator();
-			while (it.hasNext()) {
-				Entry<String, Object> entry = it.next();
-				String key = entry.getKey() + "";
-				Map<String, String> hd = new HashMap<String, String>();
-				hd.put("dispayName", key);
-				hd.put("name", key);
-				header.add(hd);
-			}
-		}
-
-		for (int i = 0; i < header.size(); i++) {
-			row.createCell(i).setCellValue(header.get(i).get("dispayName"));
-		}
-		// 生成表头结束
-		// 生成数据内容开始
-		int j = 1;
-		for (Iterator<Map<String, Object>> iterator = datas.iterator(); iterator
-				.hasNext();) {
-			row = sheet.createRow(j++);
-			Map<String, Object> map = (Map<String, Object>) iterator.next();
-			for (int i = 0; i < header.size(); i++) {
-				// row.createCell(i).setCellValue(map.get(header[i]) + "");
-				setCellValue(row.createCell(i),
-						map.get(header.get(i).get("name")));
-			}
-			if (j % 2000 == 0) {
-				try {
-					((SXSSFSheet) sheet).flushRows(2000);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		// 生成数据内容结束
-
-		for (int i = 0; i < header.size(); i++) {
-			sheet.autoSizeColumn(i);
-		}
-
-		// 生成excel文件
-		try {
-			OutputStream os = new FileOutputStream(new File(file));
-			workbook.write(os);
-			os.close();
-			((SXSSFWorkbook) workbook).dispose();
-			workbook.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return file;
 	}
 
 	private static void setCellValue(Cell cell, Object value) {
@@ -220,6 +152,14 @@ public class WriteExcelService {
 		} else {
 			cell.setCellValue(value + "");
 		}
+	}
+
+	private boolean isXLSXFile() {
+		return "xlsx".equalsIgnoreCase(excelType);
+	}
+
+	private boolean isXLSile() {
+		return "xls".equalsIgnoreCase(excelType);
 	}
 
 }

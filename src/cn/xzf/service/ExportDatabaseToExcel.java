@@ -59,8 +59,8 @@ public class ExportDatabaseToExcel {
 		logger.info("表头信息：{}", header);
 		logger.info("开始导出文件{}，开始时间为：{}", new Object[] { file,
 				new java.util.Date() });
-		writeExcelService.writeToFile();
-		logger.info("结束导出文件{}，结束时间为：{}", new Object[] { file,
+		String fileName = writeExcelService.writeToFile();
+		logger.info("结束导出文件{}，结束时间为：{}", new Object[] { fileName,
 				new java.util.Date() });
 		return flag;
 	}

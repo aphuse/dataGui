@@ -28,7 +28,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
+import jodd.io.FileNameUtil;
 import cn.xzf.presenter.ExportDataPresenter;
 import cn.xzf.ui.listener.BottomStatusPanelListener;
 import cn.xzf.ui.listener.ExportDataViewListener;
@@ -49,17 +51,16 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 
 	private ExportDataViewListener viewListen = new ExportDataPresenter(this);
 	private BottomStatusPanelListener bottomStatusPanelListen;
-	
 
 	public ExportDataView() {
 		this(null);
 	}
-	
+
 	public ExportDataView(BottomStatusPanelListener listen) {
 		bottomStatusPanelListen = listen;
 		init();
 	}
-	
+
 	public void setBottomStatusPanelListen(BottomStatusPanelListener listen) {
 		bottomStatusPanelListen = listen;
 	}
@@ -137,8 +138,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		gbc_chckbx_displayName.gridy = 0;
 		_data_head_panel.add(chckbx_displayName, gbc_chckbx_displayName);
 
-		JLabel _key_label = new JLabel(
-				"显示列KEY：");
+		JLabel _key_label = new JLabel("显示列KEY：");
 		_key_label.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc__key_label = new GridBagConstraints();
 		gbc__key_label.fill = GridBagConstraints.BOTH;
@@ -159,8 +159,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		_data_head_panel.add(textField_key, gbc_textField_key);
 		textField_key.setColumns(10);
 
-		JLabel _displayname_label = new JLabel(
-				"显示列名称：");
+		JLabel _displayname_label = new JLabel("显示列名称：");
 		_displayname_label.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc__displayname_label = new GridBagConstraints();
 		gbc__displayname_label.fill = GridBagConstraints.HORIZONTAL;
@@ -182,8 +181,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 		_data_head_panel.add(textField_displayName, gbc_textField_displayName);
 		textField_displayName.setColumns(10);
 
-		JLabel _export_file_name_label = new JLabel(
-				"导出文件名：");
+		JLabel _export_file_name_label = new JLabel("导出文件名：");
 		_export_file_name_label.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc__export_file_name_label = new GridBagConstraints();
 		gbc__export_file_name_label.fill = GridBagConstraints.HORIZONTAL;
@@ -339,8 +337,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 				return false;
 			}
 			if (key.split(",").length != displayName.split(",").length) {
-				JOptionPane
-						.showMessageDialog(this, "显示列的名称与显示列的KEY值不一致，请重新设置");
+				JOptionPane.showMessageDialog(this, "显示列的名称与显示列的KEY值不一致，请重新设置");
 				showMessage("显示列的名称与显示列的KEY值不一致，请重新设置");
 				return false;
 			}
@@ -384,27 +381,17 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 
 	public void showFileChoseDialog() {
 		JFileChooser jfc = new JFileChooser();
-		jfc.setDialogTitle("请选择导出EXCEL文件");
-		jfc.setFileFilter(new FileFilter() {
-
-			@Override
-			public String getDescription() {
-				return "Excel 工作薄(*.xlsx)";
-			}
-
-			@Override
-			public boolean accept(File f) {
-				if (f.isDirectory() || f.getName().endsWith(".xlsx")) {
-					return true;
-				}
-				return false;
-			}
-		});
+		jfc.setDialogTitle("请选择EXCEL文件");
+		FileFilter filter = new FileNameExtensionFilter("Excel 工作薄", "xlsx",
+				"xls");
+		jfc.setFileFilter(filter);
 		jfc.setCurrentDirectory(new File("./data"));
 		int i = jfc.showSaveDialog(this);
 		if (i == 0) {
 			String file = jfc.getSelectedFile().getAbsolutePath();
-			if (!file.endsWith(".xlsx")) {
+			String extension = FileNameUtil.getExtension(file).toLowerCase();
+			if (!"xlsx".equalsIgnoreCase(extension)
+					&& !"xls".equalsIgnoreCase(extension)) {
 				file = file + ".xlsx";
 			}
 			textField_file.setText(file);
@@ -442,7 +429,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 	public String getDisplayName() {
 		return textField_displayName.getText();
 	}
-	
+
 	public boolean IsCustomerSetDisplayName() {
 		return isCustomerSetDisplayName;
 	}
@@ -498,8 +485,8 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 				if (!button_reset.isEnabled()) {
 					return;
 				}
-				int option = JOptionPane.showConfirmDialog(getParent(), "是否清空设置的参数?",
-						"提示", JOptionPane.OK_CANCEL_OPTION);
+				int option = JOptionPane.showConfirmDialog(getParent(),
+						"是否清空设置的参数?", "提示", JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
 					viewListen.buttonResetMouseClicked();
 				}
@@ -512,7 +499,7 @@ public class ExportDataView extends JPanel implements ExportDataViewer {
 				if (!btnexcel.isEnabled() || !enableExport()) {
 					return;
 				}
-				//label_statusMessage.setFocusable(true);
+				// label_statusMessage.setFocusable(true);
 				viewListen.buttonExcelMouseClicked();
 			}
 		});

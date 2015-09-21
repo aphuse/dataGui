@@ -32,5 +32,9 @@ public abstract class AbstractExcelSheetModel<T> {
 	public List<T> getModelData() {
 		return modelData;
 	}
+	
+	public T getRow(int row) {
+		return modelData != null && modelData.size() > row ? modelData.get(row) : null;
+	}
 
 }
