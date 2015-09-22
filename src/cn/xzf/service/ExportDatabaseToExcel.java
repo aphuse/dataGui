@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.lzyy.db.SqlHelper;
+import cn.xzf.model.ListExcelSheetModel;
 
 public class ExportDatabaseToExcel {
 	private static final Logger logger = LoggerFactory
@@ -49,13 +50,11 @@ public class ExportDatabaseToExcel {
 		} else {
 			header = getExcelHeadersByData(results);
 		}
-		List<List<String>> columnNames = new ArrayList<List<String>>();
-		columnNames.add(header);
-		List<List<List<Object>>> datas = new ArrayList<List<List<Object>>>();
-		List<List<Object>> data = getExcelDatas(results, keyName, separator);
+		List<ListExcelSheetModel> datas = new ArrayList<ListExcelSheetModel>();
+		ListExcelSheetModel data = new ListExcelSheetModel(getExcelDatas(
+				results, keyName, separator), header);
 		datas.add(data);
-		WriteExcelService writeExcelService = new WriteExcelService(file,
-				datas, columnNames);
+		WriteExcelService writeExcelService = new WriteExcelService(file, datas);
 		logger.info("表头信息：{}", header);
 		logger.info("开始导出文件{}，开始时间为：{}", new Object[] { file,
 				new java.util.Date() });
@@ -65,8 +64,9 @@ public class ExportDatabaseToExcel {
 		return flag;
 	}
 
-	private List<List<Object>> getExcelDatas(List<Map<String, Object>> sqlDatas,
-			String keyNames, String separator) {
+	private List<List<Object>> getExcelDatas(
+			List<Map<String, Object>> sqlDatas, String keyNames,
+			String separator) {
 		if (separator == null || separator.length() == 0) {
 			separator = ",";
 		}
@@ -109,14 +109,15 @@ public class ExportDatabaseToExcel {
 		List<String> headers = Arrays.asList(displayName);
 		return headers;
 	}
-	
-	private List<String> getExcelHeadersByData(List<Map<String, Object>> sqlDatas) {
+
+	private List<String> getExcelHeadersByData(
+			List<Map<String, Object>> sqlDatas) {
 		List<String> headers = null;
 		if (sqlDatas != null && sqlDatas.size() > 0) {
 			headers = new ArrayList<String>();
 			Map<String, Object> map = sqlDatas.get(0);
-			for (Iterator<Entry<String, Object>> iterator = map
-					.entrySet().iterator(); iterator.hasNext();) {
+			for (Iterator<Entry<String, Object>> iterator = map.entrySet()
+					.iterator(); iterator.hasNext();) {
 				Entry<String, Object> entry = iterator.next();
 				headers.add(entry.getKey());
 			}

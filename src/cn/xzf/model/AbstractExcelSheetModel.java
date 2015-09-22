@@ -16,25 +16,26 @@ public abstract class AbstractExcelSheetModel<T> {
 		this.modelData = modelData;
 		this.columnNames = columnNames;
 	}
-	
+
 	public int getColumnCount() {
-		return columnNames.size();
+		return columnNames != null ? columnNames.size() : 0;
 	}
-	
+
 	public int getRowCount() {
-		return modelData.size();
+		return modelData != null ? modelData.size() : 0;
 	}
-	
+
 	public List<String> getColumnNames() {
 		return columnNames;
 	}
-	
+
 	public List<T> getModelData() {
 		return modelData;
 	}
-	
+
 	public T getRow(int row) {
-		return modelData != null && modelData.size() > row ? modelData.get(row) : null;
+		return modelData != null && modelData.size() > row ? modelData.get(row)
+				: null;
 	}
 
 }

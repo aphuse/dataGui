@@ -19,11 +19,12 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.xzf.model.ListExcelSheetModel;
+
 public class WriteExcelService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(WriteExcelService.class);
-	private List<List<List<Object>>> datas;
-	private List<List<String>> columnNames;
+	private List<ListExcelSheetModel> datas;
 	private List<String> sheetNames;
 	private int sheetCount = 0;
 	private File file;
@@ -33,19 +34,13 @@ public class WriteExcelService {
 		this(fileName, null);
 	}
 
-	public WriteExcelService(String fileName, List<List<List<Object>>> datas) {
+	public WriteExcelService(String fileName, List<ListExcelSheetModel> datas) {
 		this(fileName, datas, null);
 	}
 
-	public WriteExcelService(String fileName, List<List<List<Object>>> datas,
-			List<List<String>> columnNames) {
-		this(fileName, datas, columnNames, null);
-	}
-
-	public WriteExcelService(String fileName, List<List<List<Object>>> datas,
-			List<List<String>> columnNames, List<String> sheetNames) {
+	public WriteExcelService(String fileName, List<ListExcelSheetModel> datas,
+			List<String> sheetNames) {
 		this.datas = datas;
-		this.columnNames = columnNames;
 		this.sheetNames = sheetNames;
 		file = new File(fileName);
 		excelType = FileNameUtil.getExtension(file.getName()).toLowerCase();
@@ -59,7 +54,6 @@ public class WriteExcelService {
 
 	public String writeToFile() {
 		Workbook workbook = null;
-		int rowCount = 0;
 		if (isXLSXFile()) {
 			workbook = new SXSSFWorkbook(-1);
 		} else if (isXLSile()) {
@@ -69,16 +63,20 @@ public class WriteExcelService {
 		}
 		for (int i = 0; i < sheetCount; i++) {
 			Sheet sheet = null;
+			int rowCount = 0;
 			int columnCount = 0;
 			if (sheetNames != null && i < sheetNames.size()) {
 				sheet = workbook.createSheet(sheetNames.get(i));
 			} else {
 				sheet = workbook.createSheet();
 			}
-			// 处理表头
-			if (columnNames != null && i < columnNames.size()) {
-				List<String> columnName = columnNames.get(i);
-				if (columnName != null && columnName.size() > 0) {
+
+			// sheet数据处理
+			if (datas != null && datas.size() > i) {
+				ListExcelSheetModel sheetData = datas.get(i);
+				// 处理表头
+				if (sheetData.getColumnCount() > 0) {
+					List<String> columnName = sheetData.getColumnNames();
 					Row row = sheet.createRow(rowCount);
 					rowCount++;
 					columnCount = columnName.size();
@@ -86,35 +84,37 @@ public class WriteExcelService {
 						row.createCell(j).setCellValue(columnName.get(j));
 					}
 				}
-			}
 
-			if (datas != null && datas.size() > i) {
-				List<List<Object>> data = datas.get(i);
-				int count = data.size();
-				for (int j = 0; j < count; j++) {
-					Row row = sheet.createRow(rowCount);
-					rowCount++;
-					List<Object> rowData = data.get(j);
-					if (columnCount < rowData.size()) {
-						columnCount = rowData.size();
-					}
-					for (int k = 0; k < rowData.size(); k++) {
-						setCellValue(row.createCell(k), rowData.get(k));
-					}
-					if (isXLSXFile()) {
-						if (j % 2000 == 0) {
-							try {
-								((SXSSFSheet) sheet).flushRows(2000);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+				// 处理数据记录
+				int count = sheetData.getRowCount();
+				if (count > 0) {
+					for (int j = 0; j < count; j++) {
+						Row row = sheet.createRow(rowCount);
+						rowCount++;
+						List<Object> rowData = sheetData.getRow(j);
+						if (columnCount < rowData.size()) {
+							columnCount = rowData.size();
 						}
-					} else if (isXLSile()) {
-						if (j >= 65534) {
-							logger.error("文件{}中的sheet名为【{}】中的数据记录为{}"
-									+ "已经超过65535条记录，超过的数据记录已经丢失，请重新处理！", new Object[]{file,
-									sheet.getSheetName(), count});
-							j = count;
+						for (int k = 0; k < rowData.size(); k++) {
+							setCellValue(row.createCell(k), rowData.get(k));
+						}
+						if (isXLSXFile()) {
+							if (j % 2000 == 0) {
+								try {
+									((SXSSFSheet) sheet).flushRows(2000);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+						} else if (isXLSile()) {
+							if (j >= 65534) {
+								logger.error(
+										"文件{}中的sheet名为【{}】中的数据记录为{}"
+												+ "已经超过65535条记录，超过的数据记录已经丢失，请重新处理！",
+										new Object[] { file,
+												sheet.getSheetName(), count });
+								j = count;
+							}
 						}
 					}
 				}

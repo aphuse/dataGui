@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
@@ -28,10 +29,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import cn.xzf.presenter.ImportDataPressenter;
 import cn.xzf.service.ReadExcelService;
 import cn.xzf.ui.listener.BottomStatusPanelListener;
+import cn.xzf.ui.listener.ImportDataViewListener;
 
-public class ImportDataView extends JPanel {
+public class ImportDataView extends JPanel implements ImportDataViewer {
 	private static final long serialVersionUID = 6477727595199191913L;
 	private JTextField textFieldFile;
 	private JTable table;
@@ -50,6 +53,8 @@ public class ImportDataView extends JPanel {
 	private JPanel appenColumnPanel;
 	private JLabel lblAppenColumn;
 	private JTextField textFieldAppenColumn;
+	
+	private ImportDataViewListener listener = new ImportDataPressenter(this);
 
 	public ImportDataView() {
 		this(null);
@@ -275,8 +280,7 @@ public class ImportDataView extends JPanel {
 				if (!buttonFile.isEnabled()) {
 					return;
 				}
-				// viewListen.buttonFileMouseClicked();
-				showFileChoseDialog();
+				listener.clickOpenFileButton();
 			}
 		});
 
@@ -286,65 +290,12 @@ public class ImportDataView extends JPanel {
 				if (!buttonImport.isEnabled()) {
 					return;
 				}
-				buttonImport.setEnabled(false);
-				SwingWorker<Void, Void> task = new SwingWorker<Void, Void>() {
-
-					@Override
-					protected Void doInBackground() throws Exception {
-						setProgress(0);
-						importDataFromFile();
-						return null;
-					}
-
-					@Override
-					protected void done() {
-						buttonImport.setEnabled(true);
-						if (statusBarListen != null) {
-							statusBarListen.hideStatusProcessBar();
-							statusBarListen.showStatusMessage("导入EXCEL文件数据完成");
-						}
-						super.done();
-					}
-				};
-				if (statusBarListen != null) {
-					statusBarListen.showStatusMessage("正在导入EXCEL文件数据...");
-					statusBarListen.showStatusProcessBar();
-				}
-				task.execute();
+				listener.clickImportButton();
 			}
 		});
 	}
 	
-	public void importDataFromFile() {
-		List<List<Object>> lists = null;
-		String file = textFieldFile.getText();
-		int numberSheet = Integer.valueOf(spinnerSheet.getValue().toString());
-		if (file != null && file.length() > 0) {
-			/*if (file.toLowerCase().endsWith(".xlsx")) {
-				lists = ExeclUtils.excel2007ToList(file, numberSheet - 1);
-			} else if (file.toLowerCase().endsWith(".xls")) {
-				lists = ExeclUtils.excel2003ToList(file, numberSheet - 1);
-			}*/
-			lists = new ReadExcelService(file).excelToList(numberSheet - 1);
-			if (lists != null && lists.size() > 0) {
-				Vector<Object> columnNames = new Vector<Object>(lists.get(0));
-				lists.remove(0);
-				Vector<Vector<Object>> datas = new Vector<Vector<Object>>();
-				for (List<Object> list : lists) {
-					datas.add(new Vector<Object>(list));
-				}
-				TableModel dataModel = new DefaultTableModel(datas, columnNames);
-				table.setModel(dataModel);
-				ComboBoxModel comboBoxModel = new DefaultComboBoxModel(columnNames);
-				comboBoxColumn.setModel(comboBoxModel);
-			} else {
-				table.setModel(new DefaultTableModel());
-				comboBoxColumn.setModel(new DefaultComboBoxModel());
-			}
-		}
-	}
-
-	public void showFileChoseDialog() {
+	private void showFileChoseDialog() {
 		JFileChooser jfc = new JFileChooser();
 		jfc.setDialogTitle("请选择EXCEL文件");
 		FileFilter filter = new FileNameExtensionFilter("Excel 工作薄", "xlsx",
@@ -355,35 +306,64 @@ public class ImportDataView extends JPanel {
 		if (i == 0) {
 			final String file = jfc.getSelectedFile().getAbsolutePath();
 			textFieldFile.setText(file);
-			SwingWorker<Void, Void> task = new SwingWorker<Void, Void>() {
-
-				@Override
-				protected Void doInBackground() throws Exception {
-					setProgress(0);
-					int numberSheet = new ReadExcelService(file).getExcelSheetCount();
-					spinnerSheet.setModel(new SpinnerNumberModel(
-							new Integer(1), new Integer(1), new Integer(
-									numberSheet), new Integer(1)));
-					return null;
-				}
-
-				@Override
-				protected void done() {
-					buttonImport.setEnabled(true);
-					if (statusBarListen != null) {
-						statusBarListen.hideStatusProcessBar();
-						statusBarListen
-								.showStatusMessage("加载EXCEL文件sheet完成,现在可以导入EXCEL数据了");
-					}
-					super.done();
-				}
-			};
-			if (statusBarListen != null) {
-				statusBarListen.showStatusMessage("正在加载EXCEL文件sheet数量...");
-				statusBarListen.showStatusProcessBar();
-			}
-			task.execute();
+			listener.setSpinnerSheetModel();
 		}
+	}
+
+	@Override
+	public void openFileDialog() {
+		showFileChoseDialog();
+	}
+
+	@Override
+	public void refreshTableData(TableModel dataModel) {
+		table.setModel(dataModel);
+	}
+
+	@Override
+	public String getTextFieldFileValue() {
+		return textFieldFile.getText();
+	}
+
+	@Override
+	public void showStatusMessage(String message) {
+		if (statusBarListen != null) {
+			statusBarListen.showStatusMessage(message);
+		}
+	}
+
+	@Override
+	public void showStatusProcessBar() {
+		if (statusBarListen != null) {
+			statusBarListen.showStatusProcessBar();
+		}
+	}
+
+	@Override
+	public void hideStatusProcessBar() {
+		if (statusBarListen != null) {
+			statusBarListen.hideStatusProcessBar();
+		}
+	}
+
+	@Override
+	public int getSpinnerSheetValue() {
+		return Integer.valueOf(spinnerSheet.getValue().toString());
+	}
+
+	@Override
+	public void refreshComboBoxColumnData(ComboBoxModel dataModel) {
+		comboBoxColumn.setModel(dataModel);
+	}
+
+	@Override
+	public void enableImportButton(boolean enable) {
+		buttonImport.setEnabled(enable);
+	}
+
+	@Override
+	public void refreshSpinnerSheetModel(SpinnerModel model) {
+		spinnerSheet.setModel(model);
 	}
 
 }
