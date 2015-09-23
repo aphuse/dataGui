@@ -18,8 +18,8 @@ public class ListTableModel extends RowTableModel<List<Object>> {
 	 *            the number of Elements to add to the List
 	 *
 	 */
-	protected static List<String> newList(int size) {
-		ArrayList<String> list = new ArrayList<String>(size);
+	protected static List<Object> newList(int size) {
+		ArrayList<Object> list = new ArrayList<Object>(size);
 
 		for (int i = 0; i < size; i++) {
 			list.add(null);
@@ -48,7 +48,7 @@ public class ListTableModel extends RowTableModel<List<Object>> {
 	 * @param columnNames
 	 *            <code>List</code> containing the names of the new columns
 	 */
-	public ListTableModel(List<String> columnNames) {
+	public ListTableModel(List<Object> columnNames) {
 		super(columnNames);
 		setRowClass(List.class);
 	}
@@ -91,7 +91,7 @@ public class ListTableModel extends RowTableModel<List<Object>> {
 	 * @param columnNames
 	 *            <code>List</code> containing the names of the new columns
 	 */
-	public ListTableModel(List<List<Object>> modelData, List<String> columnNames) {
+	public ListTableModel(List<List<Object>> modelData, List<Object> columnNames) {
 		super(modelData, columnNames);
 		setRowClass(List.class);
 	}
@@ -113,7 +113,7 @@ public class ListTableModel extends RowTableModel<List<Object>> {
 	 */
 	public Object getValueAt(int row, int column) {
 		List<Object> rowData = getRow(row);
-		return rowData.get(column);
+		return rowData.size() > column ? rowData.get(column) : null;
 	}
 
 	/**
@@ -255,7 +255,7 @@ public class ListTableModel extends RowTableModel<List<Object>> {
 
 		// Create empty model using the column names
 
-		ArrayList<String> columnNames = new ArrayList<String>();
+		ArrayList<Object> columnNames = new ArrayList<Object>();
 
 		for (int i = 1; i <= columns; i++) {
 			String columnName = metaData.getColumnName(i);

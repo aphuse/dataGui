@@ -24,7 +24,7 @@ abstract class RowTableModel<T> extends AbstractTableModel {
 	private static final long serialVersionUID = -5200990284516802010L;
 	
 	protected List<T> modelData;
-	protected List<String> columnNames;
+	protected List<Object> columnNames;
 	protected Class<?>[] columnClasses;
 	protected Boolean[] isColumnEditable;
 	private Class<?> rowClass = Object.class;
@@ -58,7 +58,7 @@ abstract class RowTableModel<T> extends AbstractTableModel {
 	 * @param columnNames
 	 *            <code>List</code> containing the names of the new columns
 	 */
-	protected RowTableModel(List<String> columnNames) {
+	protected RowTableModel(List<Object> columnNames) {
 		this(new ArrayList<T>(), columnNames);
 	}
 
@@ -81,7 +81,7 @@ abstract class RowTableModel<T> extends AbstractTableModel {
 	 * @param columnNames
 	 *            <code>List</code> containing the names of the new columns
 	 */
-	protected RowTableModel(List<T> modelData, List<String> columnNames) {
+	protected RowTableModel(List<T> modelData, List<Object> columnNames) {
 		setDataAndColumnNames(modelData, columnNames);
 	}
 
@@ -102,7 +102,7 @@ abstract class RowTableModel<T> extends AbstractTableModel {
 	 * @param rowClass
 	 *            the class of row data to be added to the model
 	 */
-	protected RowTableModel(List<T> modelData, List<String> columnNames,
+	protected RowTableModel(List<T> modelData, List<Object> columnNames,
 			Class<?> rowClass) {
 		setDataAndColumnNames(modelData, columnNames);
 		setRowClass(rowClass);
@@ -119,7 +119,7 @@ abstract class RowTableModel<T> extends AbstractTableModel {
 	 *            <code>List</code> containing the names of the new columns
 	 */
 	protected void setDataAndColumnNames(List<T> modelData,
-			List<String> columnNames) {
+			List<Object> columnNames) {
 		this.modelData = modelData;
 		this.columnNames = columnNames;
 		columnClasses = new Class[getColumnCount()];

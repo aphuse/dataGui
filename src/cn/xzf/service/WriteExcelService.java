@@ -76,12 +76,12 @@ public class WriteExcelService {
 				ListExcelSheetModel sheetData = datas.get(i);
 				// 处理表头
 				if (sheetData.getColumnCount() > 0) {
-					List<String> columnName = sheetData.getColumnNames();
+					List<Object> columnName = sheetData.getColumnNames();
 					Row row = sheet.createRow(rowCount);
 					rowCount++;
 					columnCount = columnName.size();
 					for (int j = 0; j < columnCount; j++) {
-						row.createCell(j).setCellValue(columnName.get(j));
+						row.createCell(j).setCellValue(columnName.get(j) + "");
 					}
 				}
 

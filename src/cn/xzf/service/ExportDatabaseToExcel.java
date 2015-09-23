@@ -44,7 +44,7 @@ public class ExportDatabaseToExcel {
 		Object[] params = null;
 		List<Map<String, Object>> results = sqlHelper.getListResults(sql,
 				params, null, null);
-		List<String> header = null;
+		List<Object> header = null;
 		if (displayName != null) {
 			header = getExcelHeaders(displayName, separator);
 		} else {
@@ -98,23 +98,23 @@ public class ExportDatabaseToExcel {
 		return results;
 	}
 
-	private List<String> getExcelHeaders(String displayNames, String separator) {
+	private List<Object> getExcelHeaders(String displayNames, String separator) {
 		if (displayNames == null || displayNames.length() == 0) {
 			return null;
 		}
 		if (separator == null || separator.length() == 0) {
 			separator = ",";
 		}
-		String[] displayName = displayNames.split(separator);
-		List<String> headers = Arrays.asList(displayName);
+		Object[] displayName = displayNames.split(separator);
+		List<Object> headers = Arrays.asList(displayName);
 		return headers;
 	}
 
-	private List<String> getExcelHeadersByData(
+	private List<Object> getExcelHeadersByData(
 			List<Map<String, Object>> sqlDatas) {
-		List<String> headers = null;
+		List<Object> headers = null;
 		if (sqlDatas != null && sqlDatas.size() > 0) {
-			headers = new ArrayList<String>();
+			headers = new ArrayList<Object>();
 			Map<String, Object> map = sqlDatas.get(0);
 			for (Iterator<Entry<String, Object>> iterator = map.entrySet()
 					.iterator(); iterator.hasNext();) {

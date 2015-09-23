@@ -7,11 +7,8 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.List;
-import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -23,14 +20,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import cn.xzf.presenter.ImportDataPressenter;
-import cn.xzf.service.ReadExcelService;
 import cn.xzf.ui.listener.BottomStatusPanelListener;
 import cn.xzf.ui.listener.ImportDataViewListener;
 
@@ -48,13 +42,16 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 	private JLabel lblcolum;
 	private JComboBox comboBoxColumn;
 	private JLabel lblSQL;
-	private JTextField textField;
-	private JButton button_SQL;
+	private JTextField textFieldSQL;
+	private JButton buttonQuery;
 	private JPanel appenColumnPanel;
 	private JLabel lblAppenColumn;
 	private JTextField textFieldAppenColumn;
 	
 	private ImportDataViewListener listener = new ImportDataPressenter(this);
+	private JButton buttonAppenColumn;
+	private JButton buttonExport;
+	private String fileName = null;
 
 	public ImportDataView() {
 		this(null);
@@ -133,9 +130,9 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 		gbc_setPanel.gridy = 1;
 		add(setPanel, gbc_setPanel);
 		GridBagLayout gbl_setPanel = new GridBagLayout();
-		gbl_setPanel.columnWidths = new int[] { 0, 0, 0, 0, 60, 0 };
+		gbl_setPanel.columnWidths = new int[] { 0, 0, 0, 0, 0, 60, 0 };
 		gbl_setPanel.rowHeights = new int[] { 0, 0 };
-		gbl_setPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0,
+		gbl_setPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
 				Double.MIN_VALUE };
 		gbl_setPanel.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
 		setPanel.setLayout(gbl_setPanel);
@@ -165,19 +162,26 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 		gbc_buttonImport.gridx = 2;
 		gbc_buttonImport.gridy = 0;
 		setPanel.add(buttonImport, gbc_buttonImport);
+		
+		buttonExport = new JButton("表格数据导出EXCEL");
+		GridBagConstraints gbc_buttonExport = new GridBagConstraints();
+		gbc_buttonExport.insets = new Insets(0, 0, 0, 5);
+		gbc_buttonExport.gridx = 3;
+		gbc_buttonExport.gridy = 0;
+		setPanel.add(buttonExport, gbc_buttonExport);
 
 		lblcolum = new JLabel("选择关联的列：");
 		GridBagConstraints gbc_lblcolum = new GridBagConstraints();
 		gbc_lblcolum.insets = new Insets(0, 0, 0, 5);
 		gbc_lblcolum.anchor = GridBagConstraints.EAST;
-		gbc_lblcolum.gridx = 3;
+		gbc_lblcolum.gridx = 4;
 		gbc_lblcolum.gridy = 0;
 		setPanel.add(lblcolum, gbc_lblcolum);
 
 		comboBoxColumn = new JComboBox();
 		GridBagConstraints gbc_comboBoxColumn = new GridBagConstraints();
 		gbc_comboBoxColumn.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBoxColumn.gridx = 4;
+		gbc_comboBoxColumn.gridx = 5;
 		gbc_comboBoxColumn.gridy = 0;
 		setPanel.add(comboBoxColumn, gbc_comboBoxColumn);
 		
@@ -190,9 +194,9 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 		gbc_appenColumnPanel.gridy = 2;
 		add(appenColumnPanel, gbc_appenColumnPanel);
 		GridBagLayout gbl_appenColumnPanel = new GridBagLayout();
-		gbl_appenColumnPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_appenColumnPanel.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_appenColumnPanel.rowHeights = new int[]{0, 0};
-		gbl_appenColumnPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_appenColumnPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_appenColumnPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		appenColumnPanel.setLayout(gbl_appenColumnPanel);
 		
@@ -206,11 +210,19 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 		
 		textFieldAppenColumn = new JTextField();
 		GridBagConstraints gbc_textFieldAppenColumn = new GridBagConstraints();
+		gbc_textFieldAppenColumn.insets = new Insets(0, 0, 0, 5);
 		gbc_textFieldAppenColumn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldAppenColumn.gridx = 1;
 		gbc_textFieldAppenColumn.gridy = 0;
 		appenColumnPanel.add(textFieldAppenColumn, gbc_textFieldAppenColumn);
 		textFieldAppenColumn.setColumns(10);
+		
+		buttonAppenColumn = new JButton("追加列名");
+		GridBagConstraints gbc_buttonAppenColumn = new GridBagConstraints();
+		gbc_buttonAppenColumn.anchor = GridBagConstraints.EAST;
+		gbc_buttonAppenColumn.gridx = 2;
+		gbc_buttonAppenColumn.gridy = 0;
+		appenColumnPanel.add(buttonAppenColumn, gbc_buttonAppenColumn);
 
 		JPanel sqlPanel = new JPanel();
 		GridBagConstraints gbc_sqlPanel = new GridBagConstraints();
@@ -235,20 +247,20 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 		gbc_lblSQL.gridy = 0;
 		sqlPanel.add(lblSQL, gbc_lblSQL);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 0, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 0;
-		sqlPanel.add(textField, gbc_textField);
-		textField.setColumns(10);
+		textFieldSQL = new JTextField();
+		GridBagConstraints gbc_textFieldSQL = new GridBagConstraints();
+		gbc_textFieldSQL.insets = new Insets(0, 0, 0, 5);
+		gbc_textFieldSQL.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldSQL.gridx = 1;
+		gbc_textFieldSQL.gridy = 0;
+		sqlPanel.add(textFieldSQL, gbc_textFieldSQL);
+		textFieldSQL.setColumns(10);
 		
-		button_SQL = new JButton("查询数据");
-		GridBagConstraints gbc_button_SQL = new GridBagConstraints();
-		gbc_button_SQL.gridx = 2;
-		gbc_button_SQL.gridy = 0;
-		sqlPanel.add(button_SQL, gbc_button_SQL);
+		buttonQuery = new JButton("查询数据");
+		GridBagConstraints gbc_buttonQuery = new GridBagConstraints();
+		gbc_buttonQuery.gridx = 2;
+		gbc_buttonQuery.gridy = 0;
+		sqlPanel.add(buttonQuery, gbc_buttonQuery);
 
 		JPanel _table_panel = new JPanel();
 		GridBagConstraints gbc__table_panel = new GridBagConstraints();
@@ -281,6 +293,10 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 					return;
 				}
 				listener.clickOpenFileButton();
+				if (fileName != null) {
+					textFieldFile.setText(fileName);
+					listener.setSpinnerSheetModel();
+				}
 			}
 		});
 
@@ -293,26 +309,54 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 				listener.clickImportButton();
 			}
 		});
+		
+		buttonAppenColumn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (!buttonAppenColumn.isEnabled()) {
+					return;
+				}
+				listener.clickAppenColumnButton();
+			}
+		});
+		
+		buttonQuery.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (!buttonQuery.isEnabled()) {
+					return;
+				}
+				listener.clickQueryButton();
+			}
+		});
+		
+		buttonExport.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (!buttonExport.isEnabled()) {
+					return;
+				}
+				listener.clickExportButton();
+				if (fileName != null) {
+					listener.exportToExcelFile();
+				}
+			}
+		});
 	}
 	
-	private void showFileChoseDialog() {
+	@Override
+	public void showExcelFileChooseDialog(String title) {
+		fileName = null;
 		JFileChooser jfc = new JFileChooser();
-		jfc.setDialogTitle("请选择EXCEL文件");
+		jfc.setDialogTitle(title);
 		FileFilter filter = new FileNameExtensionFilter("Excel 工作薄", "xlsx",
 				"xls");
 		jfc.setFileFilter(filter);
 		jfc.setCurrentDirectory(new File("./data"));
 		int i = jfc.showOpenDialog(this);
 		if (i == 0) {
-			final String file = jfc.getSelectedFile().getAbsolutePath();
-			textFieldFile.setText(file);
-			listener.setSpinnerSheetModel();
+			fileName = jfc.getSelectedFile().getAbsolutePath();
 		}
-	}
-
-	@Override
-	public void openFileDialog() {
-		showFileChoseDialog();
 	}
 
 	@Override
@@ -364,6 +408,33 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 	@Override
 	public void refreshSpinnerSheetModel(SpinnerModel model) {
 		spinnerSheet.setModel(model);
+	}
+
+	@Override
+	public String getTextFieldSQLValue() {
+		return textFieldSQL.getText();
+	}
+
+	@Override
+	public String getTextFieldAppenColumnValue() {
+		return textFieldAppenColumn.getText();
+	}
+
+	@Override
+	public int getComboBoxColumnSelectedIndex() {
+		return comboBoxColumn.getSelectedIndex();
+	}
+
+	@Override
+	public void enableQueryButton(boolean enable) {
+		buttonQuery.setEnabled(enable);
+	}
+
+	@Override
+	public String getChooseFileName() {
+		String name = fileName;
+		fileName = null;
+		return name;
 	}
 
 }

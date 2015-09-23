@@ -3,16 +3,16 @@ package cn.xzf.model;
 import java.util.List;
 
 public abstract class AbstractExcelSheetModel<T> {
-	private List<String> columnNames;
+	private List<Object> columnNames;
 	private List<T> modelData;
 
 	protected AbstractExcelSheetModel(List<T> modelData,
-			List<String> columnNames) {
+			List<Object> columnNames) {
 		setDataAndColumnNames(modelData, columnNames);
 	}
 
 	public void setDataAndColumnNames(List<T> modelData,
-			List<String> columnNames) {
+			List<Object> columnNames) {
 		this.modelData = modelData;
 		this.columnNames = columnNames;
 	}
@@ -25,7 +25,7 @@ public abstract class AbstractExcelSheetModel<T> {
 		return modelData != null ? modelData.size() : 0;
 	}
 
-	public List<String> getColumnNames() {
+	public List<Object> getColumnNames() {
 		return columnNames;
 	}
 
