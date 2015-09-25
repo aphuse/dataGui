@@ -20,6 +20,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
@@ -61,6 +63,7 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 		statusBarListen = bottomStatusPanelListen;
 		init();
 		componentEventListent();
+		setComponentInitStatus();
 	}
 
 	/**
@@ -209,6 +212,7 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 		appenColumnPanel.add(lblAppenColumn, gbc_lblAppenColumn);
 		
 		textFieldAppenColumn = new JTextField();
+		textFieldAppenColumn.setToolTipText("输入添加的列名称，多个列名称使用逗号(,)分隔");
 		GridBagConstraints gbc_textFieldAppenColumn = new GridBagConstraints();
 		gbc_textFieldAppenColumn.insets = new Insets(0, 0, 0, 5);
 		gbc_textFieldAppenColumn.fill = GridBagConstraints.HORIZONTAL;
@@ -248,6 +252,7 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 		sqlPanel.add(lblSQL, gbc_lblSQL);
 		
 		textFieldSQL = new JTextField();
+		textFieldSQL.setToolTipText("输入SQL查询语句(示例：select name from goodsj where gcode=?)，作用使用选择表格中对应列的值作为参数值进行查询");
 		GridBagConstraints gbc_textFieldSQL = new GridBagConstraints();
 		gbc_textFieldSQL.insets = new Insets(0, 0, 0, 5);
 		gbc_textFieldSQL.fill = GridBagConstraints.HORIZONTAL;
@@ -342,6 +347,55 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 				}
 			}
 		});
+		
+		textFieldAppenColumn.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				listener.inputAppenColumnTextField();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				listener.inputAppenColumnTextField();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				
+			}
+		});
+		
+		textFieldSQL.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				listener.inputSQLTextField();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				listener.inputSQLTextField();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+			}
+		});
+	}
+	
+	/**
+	 * 
+	 * 设置组件的初始状态<br>
+	 * <br>
+	 */
+	private void setComponentInitStatus() {
+		enableImportButton(false);
+		enableAppenColumnButton(false);
+		enableExportButton(false);
+		enableQueryButton(false);
+		setEditableAppenColumnTextField(false);
+		setEditableSQLTextField(false);
 	}
 	
 	@Override
@@ -435,6 +489,26 @@ public class ImportDataView extends JPanel implements ImportDataViewer {
 		String name = fileName;
 		fileName = null;
 		return name;
+	}
+
+	@Override
+	public void enableExportButton(boolean enable) {
+		buttonExport.setEnabled(enable);
+	}
+
+	@Override
+	public void enableAppenColumnButton(boolean enable) {
+		buttonAppenColumn.setEnabled(enable);
+	}
+
+	@Override
+	public void setEditableAppenColumnTextField(boolean enable) {
+		textFieldAppenColumn.setEditable(enable);
+	}
+
+	@Override
+	public void setEditableSQLTextField(boolean enable) {
+		textFieldSQL.setEditable(enable);
 	}
 
 }

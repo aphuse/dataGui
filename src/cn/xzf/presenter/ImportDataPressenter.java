@@ -40,6 +40,7 @@ public class ImportDataPressenter implements ImportDataViewListener {
 	@Override
 	public void clickImportButton() {
 		viewer.enableImportButton(false);
+		viewer.enableExportButton(false);
 		viewer.showStatusMessage("正在导入EXCEL文件数据中...");
 		viewer.showStatusProcessBar();
 		SwingWorker<Void, Void> task = new SwingWorker<Void, Void>() {
@@ -56,6 +57,7 @@ public class ImportDataPressenter implements ImportDataViewListener {
 				viewer.enableImportButton(true);
 				viewer.hideStatusProcessBar();
 				viewer.showStatusMessage("导入EXCEL文件数据完成");
+				viewer.setEditableAppenColumnTextField(true);
 				super.done();
 			}
 		};
@@ -114,6 +116,9 @@ public class ImportDataPressenter implements ImportDataViewListener {
 
 	@Override
 	public void clickAppenColumnButton() {
+		viewer.enableImportButton(false);
+		viewer.enableAppenColumnButton(false);
+		viewer.setEditableAppenColumnTextField(false);
 		String appenColumnNamesString = viewer.getTextFieldAppenColumnValue();
 		String[] appStrings = appenColumnNamesString.split(",");
 		if (columnNames == null) {
@@ -124,11 +129,17 @@ public class ImportDataPressenter implements ImportDataViewListener {
 		}
 		TableModel dataModel = new ListTableModel(tableModelDatas, columnNames);
 		viewer.refreshTableData(dataModel);
+		viewer.setEditableSQLTextField(true);
 	}
 
 	@Override
 	public void clickQueryButton() {
 		viewer.showStatusMessage("查询数据库数据中...");
+		viewer.enableExportButton(false);
+		viewer.enableQueryButton(false);
+		viewer.enableAppenColumnButton(false);
+		viewer.setEditableAppenColumnTextField(false);
+		viewer.setEditableSQLTextField(false);
 		SwingWorker<Void, Void> task = new SwingWorker<Void, Void>() {
 
 			@Override
@@ -144,6 +155,8 @@ public class ImportDataPressenter implements ImportDataViewListener {
 				viewer.refreshTableData(dataModel);
 				viewer.hideStatusProcessBar();
 				viewer.showStatusMessage("查询数据库数据成功!");
+				viewer.enableExportButton(true);
+				viewer.setEditableAppenColumnTextField(true);
 				super.done();
 			}
 		};
@@ -207,6 +220,26 @@ public class ImportDataPressenter implements ImportDataViewListener {
 		};
 		task.execute();
 		
+	}
+
+	@Override
+	public void inputAppenColumnTextField() {
+		String value = viewer.getTextFieldAppenColumnValue();
+		if (value != null && value.trim().length() > 0) {
+			viewer.enableAppenColumnButton(true);
+		} else {
+			viewer.enableAppenColumnButton(false);
+		}
+	}
+
+	@Override
+	public void inputSQLTextField() {
+		String value = viewer.getTextFieldSQLValue();
+		if (value != null && value.trim().length() > 0) {
+			viewer.enableQueryButton(true);
+		} else {
+			viewer.enableQueryButton(false);
+		}
 	}
 
 }

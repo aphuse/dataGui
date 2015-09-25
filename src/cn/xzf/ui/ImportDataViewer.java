@@ -20,4 +20,8 @@ public interface ImportDataViewer {
 	public int getComboBoxColumnSelectedIndex();
 	public void enableQueryButton(boolean enable);
 	public String getChooseFileName();
+	public void enableExportButton(boolean enable);
+	public void enableAppenColumnButton(boolean enable);
+	public void setEditableAppenColumnTextField(boolean enable);
+	public void setEditableSQLTextField(boolean enable);
 }

@@ -8,4 +8,6 @@ public interface ImportDataViewListener {
 	public void clickAppenColumnButton();
 	public void clickExportButton();
 	public void exportToExcelFile();
+	public void inputAppenColumnTextField();
+	public void inputSQLTextField();
 }
