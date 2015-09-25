@@ -55,7 +55,6 @@ public class ExportDatabaseToExcel {
 				results, keyName, separator), header);
 		datas.add(data);
 		WriteExcelService writeExcelService = new WriteExcelService(file, datas);
-		logger.info("表头信息：{}", header);
 		logger.info("开始导出文件{}，开始时间为：{}", new Object[] { file,
 				new java.util.Date() });
 		String fileName = writeExcelService.writeToFile();

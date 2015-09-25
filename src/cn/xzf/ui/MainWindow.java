@@ -7,17 +7,19 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import cn.xzf.ui.listener.ClosedListener;
 
 public class MainWindow {
 
@@ -72,7 +74,7 @@ public class MainWindow {
 				this.getClass().getResource("/images/ui.png")));
 		frame.setTitle("小企鹅");
 		frame.setBounds(100, 100, 946, 564);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0 };
 		gridBagLayout.rowHeights = new int[] { 252, 0 };
@@ -139,11 +141,8 @@ public class MainWindow {
 		JMenuItem quitMenuItem = new JMenuItem("退出");
 		quitMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int option = JOptionPane.showConfirmDialog(frame, "是否关闭程序?",
-						"提示", JOptionPane.OK_CANCEL_OPTION);
-				if (option == JOptionPane.OK_OPTION) {
-					System.exit(0);
-				}
+				WindowEvent windowClosing = new WindowEvent(frame, WindowEvent.WINDOW_CLOSING);
+				frame.dispatchEvent(windowClosing);
 			}
 		});
 		optionMenu.add(quitMenuItem);
@@ -161,7 +160,8 @@ public class MainWindow {
 	}
 
 	private void componentEventListent() {
-		ChangeListener tabbedPaneChangeListener = new ChangeListener() {
+		frame.addWindowListener(new ClosedListener("是否退出程序？", "关闭程序确认"));
+		tabbedPane.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				JTabbedPane sourceTabbedPane = (JTabbedPane) e.getSource();
@@ -173,8 +173,7 @@ public class MainWindow {
 					bottomStatusPanel.showStatusMessage(null);
 				}
 			}
-		};
-		tabbedPane.addChangeListener(tabbedPaneChangeListener);
+		});
 	}
 
 }
